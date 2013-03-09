@@ -1,13 +1,19 @@
 # graffy
 
-A Clojure library designed to ... well, that part is up to you.
+Simple graph representation and manipulation in Clojure.
 
 ## Usage
 
-FIXME
+```clojure
+(use 'graffy.core)
+(def g (atom {}))
+(add-edge g :a :b)
+(add-edge g :a :c)
+@g
+```
 
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013 David Rupp
 
 Distributed under the Eclipse Public License, the same as Clojure.
