@@ -14,12 +14,18 @@
         (add-node this s)
         (add-node this d)
         (swap! state update-in [s] conj d)
-        (swap! state update-in [d] conj s))
+        (swap! state update-in [d] conj s)
+        this)
       (toString [_]
         (.toString @state)))))
 
 (comment
   (let [g (make-graph)]
     (add-edge g :a :b)
-    (add-edge g :a :c)
-    g))
+    (add-edge g :a :c))
+  (-> (make-graph)
+      (add-edge :a :b)
+      (add-edge :a :c))
+  (doto (make-graph)
+    (add-edge :a :b)
+    (add-edge :a :c)))
