@@ -5,11 +5,10 @@ Simple graph representation and manipulation in Clojure.
 ## Usage
 
 ```clojure
-(use 'graffy.core)
-(def g (atom {}))
-(add-edge g :a :b)
-(add-edge g :a :c)
-@g
+(let [g (make-graph)]
+  (add-edge g :a :b)
+  (add-edge g :a :c)
+  g)
 ```
 
 ## License
