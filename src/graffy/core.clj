@@ -1,22 +1,25 @@
 (ns graffy.core)
 
-(defn add-node [g n]
-  (when-not (@g n)
-    (swap! g assoc n #{}))
-  @g)
+(defprotocol Graph
+  (add-node [this n])
+  (add-edge [this s d]))
 
-(defn add-nodes [g & ns]
-  (doseq [n ns]
-    (add-node g n)))
-
-(defn add-edge [g s d]
-  (add-nodes g s d)
-  (swap! g update-in [s] conj d)
-  (swap! g update-in [d] conj s)
-  @g)
+(defn make-graph []
+  (let [state (atom {})]
+    (reify Graph
+      (add-node [_ n]
+        (when-not (@state n)
+          (swap! state assoc n #{})))
+      (add-edge [this s d]
+        (add-node this s)
+        (add-node this d)
+        (swap! state update-in [s] conj d)
+        (swap! state update-in [d] conj s))
+      (toString [_]
+        (.toString @state)))))
 
 (comment
-  (def g (atom {}))
-  (add-edge g :a :b)
-  (add-edge g :a :c)
-)
+  (let [g (make-graph)]
+    (add-edge g :a :b)
+    (add-edge g :a :c)
+    g))
