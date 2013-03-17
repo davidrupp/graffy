@@ -2,7 +2,9 @@
 
 (defprotocol Graph
   (add-node [this n])
-  (add-edge [this s d]))
+  (add-edge [this s d])
+  (nodes [this])
+  (neighbors [this n]))
 
 (defn make-graph []
   (let [state (atom {})]
@@ -16,6 +18,11 @@
         (swap! state update-in [s] conj d)
         (swap! state update-in [d] conj s)
         this)
+      (nodes [this]
+        (keys @state))
+      (neighbors [this n]
+        (or (@state n)
+            #{}))
       (toString [_]
         (.toString @state)))))
 

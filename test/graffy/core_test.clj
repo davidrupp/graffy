@@ -2,6 +2,17 @@
   (:use clojure.test
         graffy.core))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest test-nodes
+  (testing "nodes"
+    (let [g (make-graph)]
+      (is (= #{} (into #{} (nodes g))))
+      (add-edge g :a :b)
+      (is (= #{:a :b} (into #{} (nodes g)))))))
+
+(deftest test-neighbors
+  (testing "neighbors"
+    (let [g (make-graph)]
+      (add-edge g :a :b)
+      (is (= #{:b} (into #{} (neighbors g :a))))
+      (is (= #{:a} (into #{} (neighbors g :b))))
+      (is (= #{} (into #{} (neighbors g :c)))))))
