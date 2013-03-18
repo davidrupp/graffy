@@ -1,7 +1,6 @@
 (ns graffy.core)
 
 (defprotocol Graph
-  (add-node [this n])
   (add-edge [this s d])
   (nodes [this])
   (edges [this n])
@@ -11,12 +10,9 @@
 (defn make-graph []
   (let [state (atom {})]
     (reify Graph
-      (add-node [_ n]
-        (when-not (@state n)
-          (swap! state assoc n #{})))
       (add-edge [this s d]
-        (add-node this s)
-        (add-node this d)
+        (when-not (@state s) (swap! state assoc s #{}))
+        (when-not (@state d) (swap! state assoc d #{}))
         (swap! state update-in [s] conj d)
         (swap! state update-in [d] conj s)
         this)
