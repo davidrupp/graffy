@@ -26,3 +26,9 @@
             (add-edge :b :d))
       (is (= #{[:a :b] [:a :c] [:a :d]} (into #{} (edges g :a))))
       (is (= #{[:d :a] [:d :b]} (into #{} (edges g :d)))))))
+
+(deftest test-all-edges
+  (testing "all-edges"
+    (let [g (make-graph)]
+      (-> g (add-edge :a :b))
+      (is (= #{[:a :b] [:b :a]} (into #{} (all-edges g)))))))

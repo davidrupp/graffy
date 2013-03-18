@@ -5,6 +5,7 @@
   (add-edge [this s d])
   (nodes [this])
   (edges [this n])
+  (all-edges [this])
   (neighbors [this n]))
 
 (defn make-graph []
@@ -24,6 +25,9 @@
       (edges [this n]
         (for [dest (neighbors this n)]
           [n dest]))
+      (all-edges [this]
+        (apply concat (for [source (nodes this)]
+                        (edges this source))))
       (neighbors [this n]
         (or (@state n)
             #{}))
