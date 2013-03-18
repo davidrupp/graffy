@@ -4,6 +4,7 @@
   (add-node [this n])
   (add-edge [this s d])
   (nodes [this])
+  (edges [this n])
   (neighbors [this n]))
 
 (defn make-graph []
@@ -20,6 +21,9 @@
         this)
       (nodes [this]
         (keys @state))
+      (edges [this n]
+        (for [dest (neighbors this n)]
+          [n dest]))
       (neighbors [this n]
         (or (@state n)
             #{}))
