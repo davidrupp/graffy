@@ -30,13 +30,3 @@
       (toString [_]
         (.toString @state)))))
 
-(comment
-  (let [g (make-graph)]
-    (add-edge g :a :b)
-    (add-edge g :a :c))
-  (-> (make-graph)
-      (add-edge :a :b)
-      (add-edge :a :c))
-  (doto (make-graph)
-    (add-edge :a :b)
-    (add-edge :a :c)))
