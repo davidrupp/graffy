@@ -29,6 +29,20 @@
 
 (deftest test-all-edges
   (testing "all-edges"
-    (let [g (make-graph)]
-      (-> g (add-edge :a :b))
+    (let [g (-> (make-graph)
+                (add-edge :a :b))]
       (is (= #{[:a :b] [:b :a]} (into #{} (all-edges g)))))))
+
+(deftest test-dft
+  (testing "depth-first traversal"
+    (let [g (-> (make-graph)
+                (add-edge 0 1)
+                (add-edge 0 2)
+                (add-edge 0 6)
+                (add-edge 0 5)
+                (add-edge 5 3)
+                (add-edge 5 4)
+                (add-edge 3 4)
+                (add-edge 4 6))]
+      (is (= [0 1 2 5 3 4 6] (dft g 0)))
+      (is (= [5 0 1 2 6 4 3] (dft g 5))))))
