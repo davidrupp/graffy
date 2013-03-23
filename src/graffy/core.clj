@@ -16,16 +16,14 @@
 
 (defn- traverse [g n strategy]
   (assert (#{:bf :df} strategy) "Strategy must be one of :bf (breadth-first) or :df (depth-first)")
-  (loop [acc [] stack (list n)]
+  (loop [acc [] stack (seq [n])]
     (if (zero? (count stack))
       acc
-      (let [nxt (peek stack)
-            rst (pop stack)]
-        (if (contains? (into #{} acc) nxt)
-          (recur acc rst)
-          (if (= strategy :df)
-            (recur (conj acc nxt) (apply list (concat (neighbors g nxt) rst)))
-            (recur (conj acc nxt) (apply list (concat rst (neighbors g nxt))))))))))
+      (if (some #{(first stack)} acc)
+        (recur acc (rest stack))
+        (if (= strategy :df)
+          (recur (conj acc (first stack)) (concat (neighbors g (first stack)) (rest stack)))
+          (recur (conj acc (first stack)) (concat (rest stack) (neighbors g (first stack)))))))))
 
 (defn dft [g n]
   (traverse g n :df))
