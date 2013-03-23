@@ -11,8 +11,8 @@
   (keys g))
 
 (defn neighbors [g n]
-  (or (g n)
-      (sorted-set)))
+  (seq (or (g n)
+           (sorted-set))))
 
 (defn edges [g n]
   (for [dest (neighbors g n)]
@@ -22,9 +22,6 @@
   (apply concat (for [source (vertices g)]
                   (edges g source))))
 
-(defn neighbor-list [g n]
-  (apply list (neighbors g n)))
-
 (defn dft [g n]
   (loop [acc [] stack (list n)]
     (if (zero? (count stack))
@@ -33,7 +30,7 @@
             rst (pop stack)]
         (if (contains? (into #{} acc) nxt)
           (recur acc rst)
-          (recur (conj acc nxt) (apply list (concat (neighbor-list g nxt) rst))))))))
+          (recur (conj acc nxt) (apply list (concat (neighbors g nxt) rst))))))))
 
 ;; TODO: Refactor me!; bft differs from dft only in the concat call in tail position**
 (defn bft [g n]
@@ -44,4 +41,4 @@
             rst (pop stack)]
         (if (contains? (into #{} acc) nxt)
           (recur acc rst)
-          (recur (conj acc nxt) (apply list (concat rst (neighbor-list g nxt))))))))) ;; ** here
+          (recur (conj acc nxt) (apply list (concat rst (neighbors g nxt))))))))) ;; ** here
