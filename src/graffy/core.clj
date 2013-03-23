@@ -14,7 +14,8 @@
   (seq (or (g n)
            (sorted-set))))
 
-(defn dft [g n]
+(defn- traverse [g n strategy]
+  (assert (#{:bf :df} strategy) "Strategy must be one of :bf (breadth-first) or :df (depth-first)")
   (loop [acc [] stack (list n)]
     (if (zero? (count stack))
       acc
@@ -22,15 +23,12 @@
             rst (pop stack)]
         (if (contains? (into #{} acc) nxt)
           (recur acc rst)
-          (recur (conj acc nxt) (apply list (concat (neighbors g nxt) rst))))))))
+          (if (= strategy :df)
+            (recur (conj acc nxt) (apply list (concat (neighbors g nxt) rst)))
+            (recur (conj acc nxt) (apply list (concat rst (neighbors g nxt))))))))))
 
-;; TODO: Refactor me!; bft differs from dft only in the concat call in tail position**
+(defn dft [g n]
+  (traverse g n :df))
+
 (defn bft [g n]
-  (loop [acc [] stack (list n)]
-    (if (zero? (count stack))
-      acc
-      (let [nxt (peek stack)
-            rst (pop stack)]
-        (if (contains? (into #{} acc) nxt)
-          (recur acc rst)
-          (recur (conj acc nxt) (apply list (concat rst (neighbors g nxt))))))))) ;; ** here
+  (traverse g n :bf))
