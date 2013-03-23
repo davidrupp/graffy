@@ -2,16 +2,16 @@
   (:use clojure.test
         graffy.core))
 
-(deftest test-nodes
-  (testing "nodes"
-    (let [g (make-graph)]
-      (is (= #{} (into #{} (nodes g))))
+(deftest test-vertices
+  (testing "vertices"
+    (let [g (atom {})]
+      (is (= #{} (into #{} (vertices g))))
       (add-edge g :a :b)
-      (is (= #{:a :b} (into #{} (nodes g)))))))
+      (is (= #{:a :b} (into #{} (vertices g)))))))
 
 (deftest test-neighbors
   (testing "neighbors"
-    (let [g (make-graph)]
+    (let [g (atom {})]
       (add-edge g :a :b)
       (is (= #{:b} (into #{} (neighbors g :a))))
       (is (= #{:a} (into #{} (neighbors g :b))))
@@ -19,7 +19,7 @@
 
 (deftest test-edges
   (testing "edges"
-    (let [g (make-graph)]
+    (let [g (atom {})]
       (-> g (add-edge :a :b)
             (add-edge :a :c)
             (add-edge :a :d)
@@ -29,13 +29,13 @@
 
 (deftest test-all-edges
   (testing "all-edges"
-    (let [g (-> (make-graph)
+    (let [g (-> (atom {})
                 (add-edge :a :b))]
       (is (= #{[:a :b] [:b :a]} (into #{} (all-edges g)))))))
 
 (deftest test-traversal
   (testing "depth-first, breadth-first traversal"
-    (let [g (-> (make-graph)
+    (let [g (-> (atom {})
                 (add-edge 0 1)
                 (add-edge 0 2)
                 (add-edge 0 5)
