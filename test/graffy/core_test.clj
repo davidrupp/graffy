@@ -15,22 +15,6 @@
       (is (= #{:a} (into #{} (neighbors g :b))))
       (is (= #{} (into #{} (neighbors g :c)))))))
 
-(deftest test-edges
-  (testing "edges"
-    (let [g (-> {}
-                (add-edge :a :b)
-                (add-edge :a :c)
-                (add-edge :a :d)
-                (add-edge :b :d))]
-      (is (= #{[:a :b] [:a :c] [:a :d]} (into #{} (edges g :a))))
-      (is (= #{[:d :a] [:d :b]} (into #{} (edges g :d)))))))
-
-(deftest test-all-edges
-  (testing "all-edges"
-    (let [g (-> {}
-                (add-edge :a :b))]
-      (is (= #{[:a :b] [:b :a]} (into #{} (all-edges g)))))))
-
 (deftest test-traversal
   (testing "depth-first, breadth-first traversal"
     (let [g (-> {}

@@ -14,14 +14,6 @@
   (seq (or (g n)
            (sorted-set))))
 
-(defn edges [g n]
-  (for [dest (neighbors g n)]
-    [n dest]))
-
-(defn all-edges [g]
-  (apply concat (for [source (vertices g)]
-                  (edges g source))))
-
 (defn dft [g n]
   (loop [acc [] stack (list n)]
     (if (zero? (count stack))
