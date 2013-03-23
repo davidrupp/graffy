@@ -1,17 +1,17 @@
 (ns graffy.core)
 
 (defn add-edge [g s d]
-  (when-not (@g s) (swap! g assoc s (sorted-set)))
-  (when-not (@g d) (swap! g assoc d (sorted-set)))
-  (swap! g update-in [s] conj d)
-  (swap! g update-in [d] conj s)
-  g)
+  (-> g
+      (assoc s (or (g s) (sorted-set)))
+      (assoc d (or (g d) (sorted-set)))
+      (update-in [s] conj d)
+      (update-in [d] conj s)))
 
 (defn vertices [g]
-  (keys @g))
+  (keys g))
 
 (defn neighbors [g n]
-  (or (@g n)
+  (or (g n)
       (sorted-set)))
 
 (defn edges [g n]
@@ -45,5 +45,3 @@
         (if (contains? (into #{} acc) nxt)
           (recur acc rst)
           (recur (conj acc nxt) (apply list (concat rst (neighbor-list g nxt))))))))) ;; ** here
-
-

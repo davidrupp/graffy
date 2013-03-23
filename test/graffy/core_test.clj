@@ -4,38 +4,36 @@
 
 (deftest test-vertices
   (testing "vertices"
-    (let [g (atom {})]
+    (let [g {}]
       (is (= #{} (into #{} (vertices g))))
-      (add-edge g :a :b)
-      (is (= #{:a :b} (into #{} (vertices g)))))))
+      (is (= #{:a :b} (into #{} (vertices (add-edge g :a :b))))))))
 
 (deftest test-neighbors
   (testing "neighbors"
-    (let [g (atom {})]
-      (add-edge g :a :b)
+    (let [g (add-edge {} :a :b)]
       (is (= #{:b} (into #{} (neighbors g :a))))
       (is (= #{:a} (into #{} (neighbors g :b))))
       (is (= #{} (into #{} (neighbors g :c)))))))
 
 (deftest test-edges
   (testing "edges"
-    (let [g (atom {})]
-      (-> g (add-edge :a :b)
-            (add-edge :a :c)
-            (add-edge :a :d)
-            (add-edge :b :d))
+    (let [g (-> {}
+                (add-edge :a :b)
+                (add-edge :a :c)
+                (add-edge :a :d)
+                (add-edge :b :d))]
       (is (= #{[:a :b] [:a :c] [:a :d]} (into #{} (edges g :a))))
       (is (= #{[:d :a] [:d :b]} (into #{} (edges g :d)))))))
 
 (deftest test-all-edges
   (testing "all-edges"
-    (let [g (-> (atom {})
+    (let [g (-> {}
                 (add-edge :a :b))]
       (is (= #{[:a :b] [:b :a]} (into #{} (all-edges g)))))))
 
 (deftest test-traversal
   (testing "depth-first, breadth-first traversal"
-    (let [g (-> (atom {})
+    (let [g (-> {}
                 (add-edge 0 1)
                 (add-edge 0 2)
                 (add-edge 0 5)
