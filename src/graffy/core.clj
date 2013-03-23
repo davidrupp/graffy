@@ -7,7 +7,8 @@
   (all-edges [this])
   (neighbors [this n])
   (neighbor-list [this n])
-  (dft [this n]))
+  (dft [this n])
+  (bft [this n]))
 
 (defn make-graph []
   (let [state (atom {})]
@@ -41,6 +42,16 @@
               (if (contains? (into #{} acc) nxt)
                 (recur acc rst)
                 (recur (conj acc nxt) (apply list (concat (neighbor-list this nxt) rst))))))))
+      ;; N.B.: bft is exactly the same as dft, except for the order of the concat in the tail call
+      (bft [this n]
+        (loop [acc [] stack (list n)]
+          (if (zero? (count stack))
+            acc
+            (let [nxt (peek stack)
+                  rst (pop stack)]
+              (if (contains? (into #{} acc) nxt)
+                (recur acc rst)
+                (recur (conj acc nxt) (apply list (concat rst (neighbor-list this nxt))))))))) ; this is the only line that differs from dst
       (toString [_]
         (.toString @state)))))
 
