@@ -4,6 +4,8 @@ Simple graph representation and manipulation in Clojure.
 
 ## Usage
 
+<img src="doc/test-graph.png" height="250px" width="180px" />
+
 ```clojure
 (def g (-> {}
            (add-edge 0 1)
