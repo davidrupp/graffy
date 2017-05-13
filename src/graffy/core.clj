@@ -1,13 +1,17 @@
 (ns graffy.core)
 
-(defn add-edge
-  "graph: a map of sources to sets of dests; adds a bi-directional edge"
+(defn- edge
   [graph source dest]
   (-> graph
       (assoc source (or (graph source) (sorted-set)))
       (assoc dest (or (graph dest) (sorted-set)))
       (update-in [source] conj dest)
       (update-in [dest] conj source)))
+
+(defn edges
+  "graph: a map of sources to sets of dests; adds a bi-directional edge"
+  [graph source & dests]
+  (reduce #(edge %1 source %2) graph dests))
 
 (defn vertices [graph]
   (keys graph))
